@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import avatarImage from '../assets/dr-priyanshi-new-avatar.jpg';
 
 interface LogoIntroProps {
   onComplete: () => void;
@@ -6,76 +7,63 @@ interface LogoIntroProps {
 
 const LogoIntro = ({ onComplete }: LogoIntroProps) => {
   const [showLogo, setShowLogo] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    // Start logo animation after a brief delay
+    // Start logo animation immediately
     const logoTimer = setTimeout(() => {
       setShowLogo(true);
-    }, 300);
+    }, 100);
 
-    // Complete intro after animation
+    // Start fade out after 2.5 seconds
+    const fadeTimer = setTimeout(() => {
+      setFadeOut(true);
+    }, 2500);
+
+    // Complete intro after full 3 seconds
     const completeTimer = setTimeout(() => {
       onComplete();
     }, 3000);
 
     return () => {
       clearTimeout(logoTimer);
+      clearTimeout(fadeTimer);
       clearTimeout(completeTimer);
     };
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-background to-secondary flex items-center justify-center z-50">
+    <div className={`fixed inset-0 bg-gradient-to-br from-medical-bg to-medical-light flex items-center justify-center z-50 transition-all duration-500 ${fadeOut ? 'opacity-0' : 'opacity-100'}`}>
       <div className="text-center">
-        {/* Logo Container */}
+        {/* Full Screen Avatar */}
         <div 
           className={`
-            w-32 h-32 mx-auto mb-6 rounded-full bg-card border-4 border-primary 
-            flex items-center justify-center transition-all duration-1000 ease-out
-            ${showLogo ? 'animate-bounce-in' : 'opacity-0 scale-0'}
+            transition-all duration-1000 ease-out
+            ${showLogo ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}
           `}
         >
-          {/* Medical Cross Icon */}
-          <div className="relative">
-            <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center animate-logo-pulse">
-              <svg
-                className="w-8 h-8 text-primary-foreground"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                />
-              </svg>
-            </div>
-            {/* Pulsing Ring */}
-            <div className="absolute inset-0 rounded-lg bg-primary opacity-20 animate-ping"></div>
+          <div className="w-64 h-64 mx-auto mb-8 relative">
+            <img
+              src={avatarImage}
+              alt="Dr. Priyanshi Avatar"
+              className="w-full h-full object-cover rounded-full shadow-2xl"
+            />
+            {/* Glowing Ring */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-medical-primary to-medical-accent opacity-20 animate-pulse"></div>
           </div>
-        </div>
 
-        {/* App Name */}
-        <div 
-          className={`
-            transition-all duration-1000 delay-500 ease-out
-            ${showLogo ? 'animate-fade-slide-up' : 'opacity-0 translate-y-8'}
-          `}
-        >
-          <h1 className="text-4xl font-bold text-primary mb-2">
-            Dr. Priyanshi
+          <h1 className="text-5xl font-bold text-medical-primary mb-4">
+            DR. PRIYANSHI
           </h1>
-          <p className="text-lg text-muted-foreground">
-            Your AI Health Assistant
+          <p className="text-xl text-medical-secondary mb-6">
+            Your AI Health Companion
           </p>
           
-          {/* Loading Dots */}
-          <div className="flex justify-center space-x-2 mt-6">
-            <div className="w-2 h-2 bg-primary rounded-full animate-typing"></div>
-            <div className="w-2 h-2 bg-primary rounded-full animate-typing" style={{ animationDelay: '0.2s' }}></div>
-            <div className="w-2 h-2 bg-primary rounded-full animate-typing" style={{ animationDelay: '0.4s' }}></div>
+          {/* Loading Animation */}
+          <div className="flex justify-center space-x-2">
+            <div className="w-3 h-3 bg-medical-primary rounded-full animate-bounce"></div>
+            <div className="w-3 h-3 bg-medical-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+            <div className="w-3 h-3 bg-medical-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
           </div>
         </div>
       </div>

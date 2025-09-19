@@ -19,6 +19,7 @@ export interface LanguageContent {
   typingIndicator: string;
   chatInputPlaceholder: string;
   sendButton: string;
+  startChatButton: string;
   
   // Navigation
   chatTab: string;
@@ -73,6 +74,7 @@ const englishContent: LanguageContent = {
   typingIndicator: "Dr. Priyanshi is typing...",
   chatInputPlaceholder: "Type your health concerns here...",
   sendButton: "Send",
+  startChatButton: "Start Chat",
   
   // Navigation
   chatTab: "Chat",
@@ -127,6 +129,7 @@ const hindiContent: LanguageContent = {
   typingIndicator: "डॉ. प्रियांशी टाइप कर रही है...",
   chatInputPlaceholder: "यहाँ अपनी स्वास्थ्य समस्याएं लिखें...",
   sendButton: "भेजें",
+  startChatButton: "चैट शुरू करें",
   
   // Navigation
   chatTab: "चैट",

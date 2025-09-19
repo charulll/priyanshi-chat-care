@@ -3,13 +3,14 @@
 import { useState, useEffect } from 'react';
 import LogoIntro from '../components/LogoIntro';
 import UserOnboarding from '../components/UserOnboarding';
+import Homepage from '../components/Homepage';
 import ChatInterface from '../components/ChatInterface';
 import HealthTracker from '../components/HealthTracker';
 import { UserProfile } from '../types/user';
 import { getUserProfile, saveUserProfile } from '../utils/storage';
 
 const Index = () => {
-  const [currentScreen, setCurrentScreen] = useState<'intro' | 'onboarding' | 'chat' | 'health'>('intro');
+  const [currentScreen, setCurrentScreen] = useState<'intro' | 'onboarding' | 'homepage' | 'chat' | 'health'>('intro');
   const [user, setUser] = useState<UserProfile | null>(null);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const Index = () => {
       const updatedUser = { ...existingUser, lastLogin: new Date() };
       saveUserProfile(updatedUser);
       setUser(updatedUser);
-      setCurrentScreen('chat');
+      setCurrentScreen('homepage');
     } else {
       // Show intro animation for new users
       setCurrentScreen('intro');
@@ -33,6 +34,10 @@ const Index = () => {
 
   const handleOnboardingComplete = (newUser: UserProfile) => {
     setUser(newUser);
+    setCurrentScreen('homepage');
+  };
+
+  const handleStartChat = () => {
     setCurrentScreen('chat');
   };
 
@@ -40,8 +45,8 @@ const Index = () => {
     setCurrentScreen('health');
   };
 
-  const handleBackToChat = () => {
-    setCurrentScreen('chat');
+  const handleBackToHomepage = () => {
+    setCurrentScreen('homepage');
   };
 
   const handleLanguageChange = (language: 'english' | 'hindi') => {
@@ -59,6 +64,17 @@ const Index = () => {
   if (currentScreen === 'onboarding') {
     return <UserOnboarding onComplete={handleOnboardingComplete} />;
   }
+
+  if (currentScreen === 'homepage' && user) {
+    return (
+      <Homepage 
+        user={user}
+        onStartChat={handleStartChat}
+        onHealthTracking={handleNavigateToHealth}
+        onLanguageChange={handleLanguageChange}
+      />
+    );
+  }
   
   if (currentScreen === 'chat' && user) {
     return (
@@ -66,6 +82,7 @@ const Index = () => {
         user={user}
         onNavigateToHealth={handleNavigateToHealth}
         onLanguageChange={handleLanguageChange}
+        onBackToHome={handleBackToHomepage}
       />
     );
   }
@@ -74,7 +91,7 @@ const Index = () => {
     return (
       <HealthTracker 
         user={user}
-        onBack={handleBackToChat}
+        onBack={handleBackToHomepage}
       />
     );
   }

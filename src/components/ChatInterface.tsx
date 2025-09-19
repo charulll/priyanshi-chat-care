@@ -29,6 +29,7 @@ interface ChatInterfaceProps {
   user: UserProfile;
   onNavigateToHealth: () => void;
   onLanguageChange: (language: 'english' | 'hindi') => void;
+  onBackToHome?: () => void;
 }
 
 const ChatInterface = ({ user, onNavigateToHealth, onLanguageChange }: ChatInterfaceProps) => {
